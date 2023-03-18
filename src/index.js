@@ -13,6 +13,7 @@ process.on('unhandledRejection', async (reason) => {
 const LootLogger = require('./loot-logger')
 
 const path = require('path')
+const fs = require('fs');
 
 const { green, red, cyan } = require('./utils/colors')
 const AlbionNetwork = require('./network/albion-network')
@@ -57,6 +58,7 @@ async function main() {
 
   AlbionNetwork.init()
 
+  fs.writeFileSync('might.txt', '');
 
   KeyboardInput.on('key-pressed', (key) => {
     const CTRL_C = '\u0003'

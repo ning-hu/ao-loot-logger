@@ -4,6 +4,11 @@ const EventData = require('./event-data')
 const Logger = require('../utils/logger')
 const ParserError = require('./parser-error')
 const Config = require('../config')
+const fs = require('fs');
+
+BigInt.prototype.toJSON = function() { return this.toString() }
+
+const might = {};
 
 class DataHandler {
   static handleEventData(event) {
@@ -85,6 +90,34 @@ class DataHandler {
 
     try {
       switch (eventId) {
+        case 440:
+          // Might ranking
+          const type = event.parameters[1];
+          if (!might.hasOwnProperty(type)) {
+            might[type] = {};
+          }
+
+          let data = "";
+
+          for (let i = 0; i < event.parameters[6].length && i < event.parameters[7].length; i++) {
+            const name = event.parameters[6][i];
+            if (might[type].hasOwnProperty(name)) {
+              continue;
+            }
+            
+            might[type][name] = true;
+
+            data += event.parameters[1] + ',' + name + ',' + Math.round(Number(event.parameters[7][i]) / 10000) + '\n'
+          }
+
+          if (data !== "") {
+            fs.appendFile('might.txt', data, (err) => {
+              if (err) throw err;
+            });
+          }
+
+          console.log("Size of " + type + " is " +  Object.keys(might[type]).length);
+
         case Config.events.OpJoin:
           return ResponseData.OpJoin.handle(event)
 

@@ -35,11 +35,11 @@ const logger = winston.createLogger({
       handleExceptions: true,
       handleRejections: true
     }),
-    new winston.transports.Console({
-      level: isProd() ? 'error' : 'silly',
-      handleExceptions: true,
-      handleRejections: true
-    })
+    // new winston.transports.Console({
+    //   level: isProd() ? 'error' : 'silly',
+    //   handleExceptions: true,
+    //   handleRejections: true
+    // })
   ]
 })
 
