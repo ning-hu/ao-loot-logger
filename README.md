@@ -1,6 +1,15 @@
 [![Download AO Loot Logger](https://img.shields.io/badge/AO%20Loot%20Logger-Download-blue)](https://github.com/matheussampaio/ao-loot-logger/releases/latest)
 [![Discord](https://img.shields.io/badge/discord-join-blue)](https://discord.gg/fvNMF2abXr)
 
+# Might Checker 
+
+Uses the networking/decoding code to check might gains by each member in your guild. It does not know the list of guild members, so any members who have 
+accumulated 0 might will not show up. 
+
+It creates a file called `might.txt`. Run the program and open the Season Overview tab. Scroll through each Might list. The console will print the number of 
+unique members currently logged for each category. Make sure that number matches the total number of contributors to that category in game. The result is a 
+csv file that is pretty self explanatory.
+
 # Albion Online Loot Logger
 
 With AO Loot Logger you can write all the loot grabbed by other players to a file. With this file, you can use [Loot Logger Viewer](https://matheus.sampaio.us/ao-loot-logger-viewer) to analyze it.
