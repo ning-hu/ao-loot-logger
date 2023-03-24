@@ -59,6 +59,7 @@ async function main() {
   AlbionNetwork.init()
 
   fs.writeFileSync('might.txt', '');
+  fs.writeFileSync('market.txt', "Item Type ID,Quality Level,Quantity,Unit Price Silver,Seller Name\n");
 
   KeyboardInput.on('key-pressed', (key) => {
     const CTRL_C = '\u0003'

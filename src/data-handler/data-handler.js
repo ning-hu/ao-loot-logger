@@ -9,6 +9,7 @@ const fs = require('fs');
 BigInt.prototype.toJSON = function() { return this.toString() }
 
 const might = {};
+const market = {};
 
 class DataHandler {
   static handleEventData(event) {
@@ -86,10 +87,32 @@ class DataHandler {
   }
 
   static handleResponseData(event) {
-    const eventId = event?.parameters?.[253]
+    const eventId = event?.parameters?.[253];
 
     try {
       switch (eventId) {
+        case 76:
+          // Market
+          let mrkt_data = "";
+          for (let i = 0; i < event.parameters[0].length; i++) {
+            let obj = JSON.parse(event.parameters[0][i]);
+            let id = obj["Id"];
+            if (market.hasOwnProperty(id)) {
+              continue;
+            }
+            
+            market[id] = true;
+            mrkt_data += obj["ItemTypeId"] + ',' + obj["QualityLevel"] + ',' + obj["Amount"] + ',' + Math.round(Number(obj["UnitPriceSilver"]) / 10000) + ',' +  obj["SellerName"] + '\n';
+          }
+
+          if (mrkt_data !== "") {
+            fs.appendFile('market.txt', mrkt_data, (err) => {
+              if (err) throw err;
+            });
+          }
+
+          console.log("Finished recording market page\n");
+
         case 440:
           // Might ranking
           const type = event.parameters[1];
@@ -98,7 +121,6 @@ class DataHandler {
           }
 
           let data = "";
-
           for (let i = 0; i < event.parameters[6].length && i < event.parameters[7].length; i++) {
             const name = event.parameters[6][i];
             if (might[type].hasOwnProperty(name)) {
@@ -106,7 +128,6 @@ class DataHandler {
             }
             
             might[type][name] = true;
-
             data += event.parameters[1] + ',' + name + ',' + Math.round(Number(event.parameters[7][i]) / 10000) + '\n'
           }
 
