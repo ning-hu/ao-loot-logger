@@ -60,6 +60,7 @@ async function main() {
 
   fs.writeFileSync('might.txt', '');
   fs.writeFileSync('market.txt', "Item Type ID,Quality Level,Quantity,Unit Price Silver,Seller Name\n");
+  fs.writeFileSync('gvg.txt', "Name,Points,Deaths,Joined On\n");
 
   KeyboardInput.on('key-pressed', (key) => {
     const CTRL_C = '\u0003'

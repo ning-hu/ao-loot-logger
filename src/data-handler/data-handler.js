@@ -10,6 +10,7 @@ BigInt.prototype.toJSON = function() { return this.toString() }
 
 const might = {};
 const market = {};
+const gvg = {};
 
 class DataHandler {
   static handleEventData(event) {
@@ -91,6 +92,28 @@ class DataHandler {
 
     try {
       switch (eventId) {
+        case 439:
+          // GVG Points
+          let gvg_data = "";
+          for (let i = 0; i < event.parameters[6].length && i < event.parameters[7].length; i++) {
+            const name = event.parameters[6][i];
+            if (gvg.hasOwnProperty(name)) {
+              continue;
+            }
+            
+            gvg[name] = true;
+            gvg_data += name + ',' + event.parameters[7][i] + '\n';
+          }
+
+          if (gvg_data !== "") {
+            fs.appendFile('gvg.txt', gvg_data, (err) => {
+              if (err) throw err;
+            });
+          }
+
+          console.log("Size of gvg generated points is " +  Object.keys(gvg).length);
+          break;
+
         case 76:
           // Market
           let mrkt_data = "";
@@ -111,7 +134,8 @@ class DataHandler {
             });
           }
 
-          console.log("Finished recording market page\n");
+          console.log("Finished recording market page");
+          break;
 
         case 440:
           // Might ranking
@@ -128,7 +152,7 @@ class DataHandler {
             }
             
             might[type][name] = true;
-            data += event.parameters[1] + ',' + name + ',' + Math.round(Number(event.parameters[7][i]) / 10000) + '\n'
+            data += event.parameters[1] + ',' + name + ',' + Math.round(Number(event.parameters[7][i]) / 10000) + '\n';
           }
 
           if (data !== "") {
@@ -138,6 +162,7 @@ class DataHandler {
           }
 
           console.log("Size of " + type + " is " +  Object.keys(might[type]).length);
+          break;
 
         case Config.events.OpJoin:
           return ResponseData.OpJoin.handle(event)
