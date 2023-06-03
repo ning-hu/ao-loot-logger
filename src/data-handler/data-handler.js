@@ -92,7 +92,7 @@ class DataHandler {
 
     try {
       switch (eventId) {
-        case 439:
+        case 440:
           // GVG Points
           let gvg_data = "";
           for (let i = 0; i < event.parameters[6].length && i < event.parameters[7].length; i++) {
@@ -137,7 +137,7 @@ class DataHandler {
           console.log("Finished recording market page");
           break;
 
-        case 440:
+        case 441:
           // Might ranking
           const type = event.parameters[1];
           if (!might.hasOwnProperty(type)) {
